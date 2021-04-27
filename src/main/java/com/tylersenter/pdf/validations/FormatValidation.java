@@ -10,6 +10,10 @@ import org.apache.commons.validator.routines.LongValidator;
 
 public class FormatValidation extends FieldValidation {
 
+  private static final String MINIMUM_PROP = "minimum";
+  private static final String MAXIMUM_PROP = "maximum";
+  private static final String EQUALS_PROP = "equals";
+
   public static enum FormatType {
     EMAIL, INTEGER, DECIMAL;
   }
@@ -55,6 +59,51 @@ public class FormatValidation extends FieldValidation {
 
     boolean isValid = validator.isValid(field.asTextField().getValue());
 
+    Long value;
+    Long equals = null;
+    long minimum = Long.MIN_VALUE;
+    long maximum = Long.MAX_VALUE;
+
+    if (!isValid) {
+      generateError(field, preferences, report);
+      return false;
+    }
+
+    value = Long.parseLong(field.valueAsString());
+
+    if (hasProperty(MINIMUM_PROP)) {
+      Object minObject = getProperty(MINIMUM_PROP);
+
+      if (!(minObject instanceof Long)) {
+        throw new IllegalArgumentException("The value of " + MINIMUM_PROP + " must be a number");
+      }
+      minimum = (long) minObject;
+    }
+
+    if (hasProperty(MAXIMUM_PROP)) {
+      Object maxObject = getProperty(MAXIMUM_PROP);
+
+      if (!(maxObject instanceof Long)) {
+        throw new IllegalArgumentException("The value of " + MAXIMUM_PROP + " must be a number");
+      }
+      maximum = (long) maxObject;
+    }
+
+    if (hasProperty(EQUALS_PROP)) {
+      Object eqObject = getProperty(EQUALS_PROP);
+
+      if (!(eqObject instanceof Long)) {
+        throw new IllegalArgumentException("The value of " + EQUALS_PROP + " must be a number");
+      }
+      equals = (long) eqObject;
+    }
+
+    isValid &= minimum <= value;
+    isValid &= value <= maximum;
+    if (equals != null) {
+      isValid &= value == equals;
+    }
+
     if (isValid) {
       generateReport(field, preferences, report);
     } else {
@@ -69,6 +118,51 @@ public class FormatValidation extends FieldValidation {
     DoubleValidator validator = DoubleValidator.getInstance();
 
     boolean isValid = validator.isValid(field.asTextField().getValue());
+
+    Double value;
+    Double equals = null;
+    double minimum = Double.MIN_VALUE;
+    double maximum = Double.MAX_VALUE;
+
+    if (!isValid) {
+      generateError(field, preferences, report);
+      return false;
+    }
+
+    value = Double.parseDouble(field.valueAsString());
+
+    if (hasProperty(MINIMUM_PROP)) {
+      Object minObject = getProperty(MINIMUM_PROP);
+
+      if (!(minObject instanceof Long)) {
+        throw new IllegalArgumentException("The value of " + MINIMUM_PROP + " must be a number");
+      }
+      minimum = (double) minObject;
+    }
+
+    if (hasProperty(MAXIMUM_PROP)) {
+      Object maxObject = getProperty(MAXIMUM_PROP);
+
+      if (!(maxObject instanceof Long)) {
+        throw new IllegalArgumentException("The value of " + MAXIMUM_PROP + " must be a number");
+      }
+      maximum = (double) maxObject;
+    }
+
+    if (hasProperty(EQUALS_PROP)) {
+      Object eqObject = getProperty(EQUALS_PROP);
+
+      if (!(eqObject instanceof Long)) {
+        throw new IllegalArgumentException("The value of " + EQUALS_PROP + " must be a number");
+      }
+      equals = (double) eqObject;
+    }
+
+    isValid &= minimum <= value;
+    isValid &= value <= maximum;
+    if (equals != null) {
+      isValid &= value == equals;
+    }
 
     if (isValid) {
       generateReport(field, preferences, report);

@@ -7,13 +7,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class Preferences {
 
-  public static enum ReportType {
+  public static enum ReportLevel {
     NONE, EXIT_CODE, COMPACT, DETAILED, ALL;
   }
 
   private static final String INVALID_MESSAGE_FIELD = "invalidMessage";
   private static final String VALID_MESSAGE_FIELD = "validMessage";
-  private static final String REPORT_TYPE_FIELD = "reportingType";
+  private static final String REPORT_LEVEL_FIELD = "reportLevel";
   private static final String SILENT_FIELD = "silent";
   private static final String WARN_ON_UNKNOWN_FIELD = "warnOnUnknownField";
 
@@ -24,21 +24,21 @@ public class Preferences {
 
     DEFAULT_VALUES.put(INVALID_MESSAGE_FIELD, "The value '{{fieldValue}}' for '{{fieldName}}' is invalid.");
     DEFAULT_VALUES.put(VALID_MESSAGE_FIELD, "The field {{fieldName}} is valid.");
-    DEFAULT_VALUES.put(REPORT_TYPE_FIELD, ReportType.DETAILED);
+    DEFAULT_VALUES.put(REPORT_LEVEL_FIELD, ReportLevel.DETAILED);
     DEFAULT_VALUES.put(SILENT_FIELD, false);
     DEFAULT_VALUES.put(WARN_ON_UNKNOWN_FIELD, true);
   }
 
   private String validMessage;
   private String invalidMessage;
-  private ReportType reportingType;
+  private ReportLevel reportLevel;
   private boolean isSilent;
   private boolean warnOnUnknownField;
 
   public Preferences() {
     this.validMessage = (String) DEFAULT_VALUES.get(VALID_MESSAGE_FIELD);
     this.invalidMessage = (String) DEFAULT_VALUES.get(INVALID_MESSAGE_FIELD);
-    this.reportingType = (ReportType) DEFAULT_VALUES.get(REPORT_TYPE_FIELD);
+    this.reportLevel = (ReportLevel) DEFAULT_VALUES.get(REPORT_LEVEL_FIELD);
     this.isSilent = (boolean) DEFAULT_VALUES.get(SILENT_FIELD);
     this.warnOnUnknownField = (boolean) DEFAULT_VALUES.get(WARN_ON_UNKNOWN_FIELD);
   }
@@ -59,12 +59,12 @@ public class Preferences {
     this.invalidMessage = invalidMessage;
   }
 
-  public ReportType getReportingType() {
-    return reportingType;
+  public ReportLevel getReportLevel() {
+    return reportLevel;
   }
 
-  public void setReportingType(ReportType reportingType) {
-    this.reportingType = reportingType;
+  public void setReportLevel(ReportLevel reportingType) {
+    this.reportLevel = reportingType;
   }
 
   public boolean isSilent() {
@@ -101,7 +101,7 @@ public class Preferences {
 
     preferences.setValidMessage(getValidMessage(rootNode));
     preferences.setInvalidMessage(getInvalidMessage(rootNode));
-    preferences.setReportingType(getReportTypeJson(rootNode));
+    preferences.setReportLevel(getReportTypeJson(rootNode));
     preferences.setIsSilent(getSilent(rootNode));
     preferences.setWarnOnUnknownField(getWarnOnUnknown(rootNode));
 
@@ -128,18 +128,18 @@ public class Preferences {
     return propertyNode.asText();
   }
 
-  private static ReportType getReportTypeJson(JsonNode node) {
-    JsonNode propertyNode = node.get(REPORT_TYPE_FIELD);
+  private static ReportLevel getReportTypeJson(JsonNode node) {
+    JsonNode propertyNode = node.get(REPORT_LEVEL_FIELD);
 
     if (propertyNode == null || propertyNode.isNull()) {
-      return (ReportType) DEFAULT_VALUES.get(REPORT_TYPE_FIELD);
+      return (ReportLevel) DEFAULT_VALUES.get(REPORT_LEVEL_FIELD);
     }
 
     String typeAsText = propertyNode.asText();
     try {
-      return ReportType.valueOf(typeAsText.toUpperCase());
+      return ReportLevel.valueOf(typeAsText.toUpperCase());
     } catch (Exception e) {
-      throw new IllegalArgumentException("Value '" + typeAsText + "' is not a valid reporting type. Valid values are " + Arrays.toString(ReportType.values()));
+      throw new IllegalArgumentException("Value '" + typeAsText + "' is not a valid reporting type. Valid values are " + Arrays.toString(ReportLevel.values()));
     }
   }
 

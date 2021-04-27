@@ -2,14 +2,12 @@ package com.tylersenter.pdf.validations;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import com.tylersenter.pdf.FormField;
 import com.tylersenter.pdf.configurations.Preferences;
+import com.tylersenter.pdf.misc.VariableUtils;
 import com.tylersenter.pdf.reporting.Report;
 
 public abstract class FieldValidation {
-  private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{\\{([A-z]+)\\}\\}");
 
   private String validMessage;
   private String invalidMessage;
@@ -73,25 +71,6 @@ public abstract class FieldValidation {
   }
 
   protected String replaceVariables(FormField field, String message) {
-    Matcher matcher = VARIABLE_PATTERN.matcher(message);
-
-    while (matcher.find()) {
-      String varName = matcher.group(1);
-
-      message = message.replace(matcher.group(), resolveVariable(field, varName));
-    }
-
-    return message;
-  }
-
-  private String resolveVariable(FormField field, String variable) {
-    switch (variable) {
-      case "fieldName":
-        return field.getField().getFullyQualifiedName();
-      case "fieldValue":
-        return field.valueAsString();
-    }
-
-    throw new IllegalArgumentException("The variable '" + variable + "' is undefined.");
+    return VariableUtils.replaceVariables(field, message);
   }
 }

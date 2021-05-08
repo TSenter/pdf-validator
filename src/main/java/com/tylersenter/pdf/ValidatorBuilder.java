@@ -60,7 +60,7 @@ public class ValidatorBuilder {
             + ". Valid values are " + Arrays.toString(FieldType.values()));
       }
 
-      FormField formField = new FormField(fieldName, fieldType, null);
+      FormField formField = new FormField(fieldName, fieldType);
 
       fields.put(fieldName, formField);
       validations.put(fieldName, new LinkedList<FieldValidation>());

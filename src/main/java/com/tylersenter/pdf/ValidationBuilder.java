@@ -65,7 +65,11 @@ public class ValidationBuilder {
             properties.put(entryKey, node.asBoolean());
             continue;
           case NUMBER:
-            properties.put(entryKey, node.asDouble());
+            if (node.isDouble()) {
+              properties.put(entryKey, node.asDouble());
+            } else {
+              properties.put(entryKey, node.asLong());
+            }
             continue;
           case STRING:
             properties.put(entryKey, node.asText());

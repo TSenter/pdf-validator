@@ -26,6 +26,10 @@ public class FormField {
   private FieldType fieldType;
   private PDField field;
 
+  public FormField(String name, FieldType fieldType) {
+    this(name, fieldType, null);
+  }
+
   public FormField(String name, FieldType fieldType, PDField field) {
     this.name = name;
     this.fieldType = fieldType;

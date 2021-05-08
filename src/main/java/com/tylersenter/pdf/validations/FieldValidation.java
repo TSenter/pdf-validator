@@ -27,8 +27,20 @@ public abstract class FieldValidation {
     return validMessage;
   }
 
+  public void setValidMessage(String validMessage) {
+    this.validMessage = validMessage;
+  }
+
   public String getInvalidMessage() {
     return invalidMessage;
+  }
+
+  public void setInvalidMessage(String invalidMessage) {
+    this.invalidMessage = invalidMessage;
+  }
+
+  public Map<String, Object> getProperties() {
+    return properties;
   }
 
   public void setProperties(Map<String, Object> properties) {

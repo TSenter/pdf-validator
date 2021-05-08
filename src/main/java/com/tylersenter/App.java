@@ -13,14 +13,14 @@ import com.tylersenter.pdf.reporting.Report.ReportType;
 public class App {
 
   public static void main(String[] args) throws Exception {
-    if (args.length == 0) {
-      System.err.println("Error: no files were specified");
+    if (args.length < 2) {
+      System.err.println("Usage: ... config.json files...");
       System.exit(1);
     }
 
     Logger.getLogger("org.apache.pdfbox").setLevel(Level.SEVERE);
 
-    File configFile = new File("config.json");
+    File configFile = new File(args[0]);
 
     if (!configFile.exists()) {
       System.err.println("Error: no configuration file found, should be named config.json");
@@ -33,7 +33,8 @@ public class App {
     Preferences prefs;
     File pdf;
     Report report;
-    for (String arg : args) {
+    for (int i = 1; i < args.length; i++) {
+      String arg = args[i];
       pdf = new File(arg);
 
       if (!pdf.exists()) {

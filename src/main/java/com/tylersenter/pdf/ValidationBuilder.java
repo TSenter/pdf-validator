@@ -11,14 +11,14 @@ import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.tylersenter.pdf.validations.BlacklistValidation;
+import com.tylersenter.pdf.validations.AllowListValidation;
+import com.tylersenter.pdf.validations.DisallowListValidation;
 import com.tylersenter.pdf.validations.FieldValidation;
 import com.tylersenter.pdf.validations.FormatValidation;
 import com.tylersenter.pdf.validations.FormatValidation.FormatType;
 import com.tylersenter.pdf.validations.RegexValidation;
 import com.tylersenter.pdf.validations.RequiredValidation;
 import com.tylersenter.pdf.validations.RequiredValidation.Level;
-import com.tylersenter.pdf.validations.WhitelistValidation;
 
 public class ValidationBuilder {
   public static FieldValidation build(String key, JsonNode value) {
@@ -87,10 +87,10 @@ public class ValidationBuilder {
       validation = buildRequired(valueNode, validMessage, invalidMessage);
     } else if (key.equals("format")) {
       validation = buildFormat(valueNode, validMessage, invalidMessage);
-    } else if (key.equals("whitelist")) {
-      validation = buildWhitelist(valueNode, validMessage, invalidMessage);
-    } else if (key.equals("blacklist")) {
-      validation = buildBlacklist(valueNode, validMessage, invalidMessage);
+    } else if (key.equals("allowList")) {
+      validation = buildAllowList(valueNode, validMessage, invalidMessage);
+    } else if (key.equals("disallowList")) {
+      validation = buildDisallowList(valueNode, validMessage, invalidMessage);
     } else if (key.equals("regex")) {
       validation = buildRegex(valueNode, validMessage, invalidMessage);
     } else if (key.equals("custom")) {
@@ -147,7 +147,7 @@ public class ValidationBuilder {
     return new FormatValidation(type, validMessage, invalidMessage);
   }
 
-  private static FieldValidation buildWhitelist(JsonNode node, String validMessage,
+  private static FieldValidation buildAllowList(JsonNode node, String validMessage,
       String invalidMessage) {
     List<String> allowedValues;
 
@@ -156,13 +156,13 @@ public class ValidationBuilder {
     } else if (node.isArray()) {
       allowedValues = convertArrayToList((ArrayNode) node);
     } else {
-      throw new IllegalArgumentException("Invalid type for whitelist value " + node.getNodeType());
+      throw new IllegalArgumentException("Invalid type for allowList value " + node.getNodeType());
     }
 
-    return new WhitelistValidation(allowedValues, validMessage, invalidMessage);
+    return new AllowListValidation(allowedValues, validMessage, invalidMessage);
   }
 
-  private static FieldValidation buildBlacklist(JsonNode node, String validMessage,
+  private static FieldValidation buildDisallowList(JsonNode node, String validMessage,
       String invalidMessage) {
     List<String> disallowedValues;
 
@@ -171,10 +171,11 @@ public class ValidationBuilder {
     } else if (node.isArray()) {
       disallowedValues = convertArrayToList((ArrayNode) node);
     } else {
-      throw new IllegalArgumentException("Invalid type for whitelist value " + node.getNodeType());
+      throw new IllegalArgumentException(
+          "Invalid type for disallowList value " + node.getNodeType());
     }
 
-    return new BlacklistValidation(disallowedValues, validMessage, invalidMessage);
+    return new DisallowListValidation(disallowedValues, validMessage, invalidMessage);
   }
 
   private static FieldValidation buildRegex(JsonNode node, String validMessage,

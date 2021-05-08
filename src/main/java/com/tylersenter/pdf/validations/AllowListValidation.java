@@ -6,13 +6,13 @@ import com.tylersenter.pdf.FormField;
 import com.tylersenter.pdf.configurations.Preferences;
 import com.tylersenter.pdf.reporting.Report;
 
-public class WhitelistValidation extends FieldValidation {
+public class AllowListValidation extends FieldValidation {
 
   private static final String CASE_SENSITIVE_FIELD = "caseSensitive";
 
   private List<String> allowedValues;
 
-  public WhitelistValidation(List<String> allowedValues, String validMessage,
+  public AllowListValidation(List<String> allowedValues, String validMessage,
       String invalidMessage) {
     super(validMessage, invalidMessage);
     this.allowedValues = allowedValues;

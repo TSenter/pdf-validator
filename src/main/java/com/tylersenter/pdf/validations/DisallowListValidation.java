@@ -6,13 +6,13 @@ import com.tylersenter.pdf.FormField;
 import com.tylersenter.pdf.configurations.Preferences;
 import com.tylersenter.pdf.reporting.Report;
 
-public class BlacklistValidation extends FieldValidation {
+public class DisallowListValidation extends FieldValidation {
 
   private static final String CASE_SENSITIVE_FIELD = "caseSensitive";
 
   private List<String> disallowedValues;
 
-  public BlacklistValidation(List<String> disallowedValues, String validMessage,
+  public DisallowListValidation(List<String> disallowedValues, String validMessage,
       String invalidMessage) {
     super(validMessage, invalidMessage);
     this.disallowedValues = disallowedValues;

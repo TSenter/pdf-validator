@@ -43,29 +43,29 @@ This property requires the field to fit a particular format. The `decimal` forma
 
 Both numeric types can also specify `minimum`, `maximum`, and `equals` options to enforce restrictions on the values of integers that can be entered.
 
-#### Property - `whitelist`
+#### Property - `allowList`
 
 |                |             |
 | -------------- | ----------- |
-| Name           | `whitelist` |
+| Name           | `allowList` |
 | Default Value  | `null`      |
 | Allowed Values | Array       |
 
-This property requires the field to match an item in the given list. The `value` property must be either an array or a string of comma-separated values. If the value is not matched to a value in the whitelist, the validation fails.
+This property requires the field to match an item in the given list. The `value` property must be either an array or a string of comma-separated values. If the value is not matched to a value in the allow list, the validation fails.
 
-The `caseSensitive` option (defaults to true) can be turned off to allow strings that match when ignoring case, eg. a whitelist of `"A,B,C,D"` would match `a` if the `caseSensitive` option is `false` and thus the validation would pass.
+The `caseSensitive` option (defaults to true) can be turned off to allow strings that match when ignoring case, eg. an allow list of `"A,B,C,D"` would match `a` if the `caseSensitive` option is `false` and thus the validation would pass.
 
-#### Property - `blacklist`
+#### Property - `disallowList`
 
-|                |             |
-| -------------- | ----------- |
-| Name           | `blacklist` |
-| Default Value  | `null`      |
-| Allowed Values | Array       |
+|                |                |
+| -------------- | -------------- |
+| Name           | `disallowList` |
+| Default Value  | `null`         |
+| Allowed Values | String, Array  |
 
-This property requires the field to match an item in the given list. The `value` property must be either an array or a string of comma-separated values. If the value is matched to a value in the blacklist, the validation fails.
+This property requires the field to *not* match an item in the given list. The `value` property must be either an array or a string of comma-separated values. If the value is matched to a value in the disallow list, the validation fails.
 
-The `caseSensitive` option (defaults to true) can be turned off to allow strings that match when ignoring case, eg. a blacklist of `"A,B,C,D"` would match `a` if the `caseSensitive` option is `false` and thus the validation would fail.
+The `caseSensitive` option (defaults to true) can be turned off to allow strings that match when ignoring case, eg. a disallow list of `"A,B,C,D"` would match `a` if the `caseSensitive` option is `false` and thus the validation would fail.
 
 #### Property - `regex`
 

@@ -9,6 +9,7 @@ import com.tylersenter.pdf.reporting.Report;
 public class DisallowListValidation extends FieldValidation {
 
   private static final String CASE_SENSITIVE_FIELD = "caseSensitive";
+  private static final String ALLOW_TRIM_FIELD = "allowTrim";
 
   private List<String> disallowedValues;
 
@@ -26,6 +27,10 @@ public class DisallowListValidation extends FieldValidation {
 
     if (hasProperty(CASE_SENSITIVE_FIELD)) {
       caseSensitive = (boolean) getProperty(CASE_SENSITIVE_FIELD);
+    }
+
+    if (hasProperty(ALLOW_TRIM_FIELD) && (boolean) getProperty(ALLOW_TRIM_FIELD)) {
+      value = value.trim();
     }
 
     for (String disallowedValue : disallowedValues) {

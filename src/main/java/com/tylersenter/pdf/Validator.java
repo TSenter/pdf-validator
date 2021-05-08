@@ -27,6 +27,7 @@ public class Validator {
     ValidatorBuilder builder = new ValidatorBuilder(this, fields, validations);
 
     builder.loadFields(rootNode);
+    builder.loadTables(rootNode);
     builder.loadFieldsFromFile(pdf);
   }
 

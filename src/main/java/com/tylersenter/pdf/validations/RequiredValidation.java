@@ -54,6 +54,11 @@ public class RequiredValidation extends FieldValidation {
       return false;
     }
 
+    if (level == Level.NO && !field.hasValue()) {
+      generateReport(field, preferences, report);
+      return false;
+    }
+
     if (level == Level.WARNING && !field.hasValue()) {
       generateWarning(field, preferences, report);
       return true;

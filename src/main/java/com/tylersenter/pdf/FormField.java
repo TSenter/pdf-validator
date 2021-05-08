@@ -25,6 +25,7 @@ public class FormField {
   private String name;
   private FieldType fieldType;
   private PDField field;
+  private String valueAsString;
 
   public FormField(String name, FieldType fieldType) {
     this(name, fieldType, null);
@@ -34,6 +35,28 @@ public class FormField {
     this.name = name;
     this.fieldType = fieldType;
     this.field = field;
+    findValueAsString();
+  }
+
+  private void findValueAsString() {
+    if (isTextField()) {
+      valueAsString = asTextField().getValue();
+    } else if (isCheckBox()) {
+      valueAsString = String.valueOf(asCheckBox().isChecked());
+    } else if (isRadioButton()) {
+      valueAsString = asRadioButton().getValue();
+    } else if (isSignature()) {
+      PDSignature signature = asSignatureField().getSignature();
+
+      if (signature == null) {
+        valueAsString =  "";
+      } else {
+        valueAsString = signature.getName();
+      }
+    } else {
+      throw new IllegalStateException("Unknown field type: " + fieldType);
+    }
+
   }
 
   public String getName() {
@@ -94,25 +117,6 @@ public class FormField {
   }
 
   public String valueAsString() {
-    if (isTextField()) {
-      return asTextField().getValue();
-    }
-    if (isCheckBox()) {
-      return String.valueOf(asCheckBox().isChecked());
-    }
-    if (isRadioButton()) {
-      return asRadioButton().getValue();
-    }
-    if (isSignature()) {
-      PDSignature signature = asSignatureField().getSignature();
-
-      if (signature == null) {
-        return "";
-      } else {
-        return signature.getName();
-      }
-    }
-
-    throw new IllegalStateException("Unknown field type: " + fieldType);
+    return valueAsString;
   }
 }

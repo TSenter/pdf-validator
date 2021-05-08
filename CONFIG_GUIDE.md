@@ -67,6 +67,18 @@ This property requires the field to *not* match an item in the given list. The `
 
 The `caseSensitive` option (defaults to true) can be turned off to allow strings that match when ignoring case, eg. a disallow list of `"A,B,C,D"` would match `a` if the `caseSensitive` option is `false` and thus the validation would fail.
 
+#### Property - `warnList`
+
+|                |                |
+| -------------- | -------------- |
+| Name           | `warnList`     |
+| Default Value  | `null`         |
+| Allowed Values | String, Array  |
+
+This property can be used to warn the user of values that are currently accepted but may not be in the future. The `value` property must be either an array or a string of comma-separated values. This validation will always pass but may be used to give users additional information about their data. As such, it is highly advised to use the `invalidMessage` property with this validation in order to accurately inform the user of why their data may be bad in the future.
+
+The `caseSensitive` option (defaults to true) can be turned off to allow strings that match when ignoring case, eg. a warn list of `"A,B,C,D"` would match `a` if the `caseSensitive` option is `false` and thus a warning would be generated.
+
 #### Property - `regex`
 
 |                |         |

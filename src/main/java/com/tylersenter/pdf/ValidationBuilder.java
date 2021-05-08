@@ -18,6 +18,7 @@ import com.tylersenter.pdf.validations.FormatValidation;
 import com.tylersenter.pdf.validations.FormatValidation.FormatType;
 import com.tylersenter.pdf.validations.RegexValidation;
 import com.tylersenter.pdf.validations.RequiredValidation;
+import com.tylersenter.pdf.validations.WarnListValidation;
 import com.tylersenter.pdf.validations.RequiredValidation.Level;
 
 public class ValidationBuilder {
@@ -91,6 +92,8 @@ public class ValidationBuilder {
       validation = buildAllowList(valueNode, validMessage, invalidMessage);
     } else if (key.equals("disallowList")) {
       validation = buildDisallowList(valueNode, validMessage, invalidMessage);
+    } else if (key.equals("warnList")) {
+      validation = buildWarnList(valueNode, validMessage, invalidMessage);
     } else if (key.equals("regex")) {
       validation = buildRegex(valueNode, validMessage, invalidMessage);
     } else if (key.equals("custom")) {
@@ -176,6 +179,21 @@ public class ValidationBuilder {
     }
 
     return new DisallowListValidation(disallowedValues, validMessage, invalidMessage);
+  }
+
+  private static FieldValidation buildWarnList(JsonNode node, String validMessage,
+      String warnMessage) {
+    List<String> warnValues;
+
+    if (node.isTextual()) {
+      warnValues = Arrays.asList(node.asText().split(","));
+    } else if (node.isArray()) {
+      warnValues = convertArrayToList((ArrayNode) node);
+    } else {
+      throw new IllegalArgumentException("Invalid type for warnList value " + node.getNodeType());
+    }
+
+    return new WarnListValidation(warnValues, validMessage, warnMessage);
   }
 
   private static FieldValidation buildRegex(JsonNode node, String validMessage,

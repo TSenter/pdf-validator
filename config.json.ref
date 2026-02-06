@@ -1,0 +1,78 @@
+{
+  "preferences": {},
+  "fields": [
+    {
+      "name": "Last Name",
+      "type": "text",
+      "validations": {
+        "required": "yes"
+      }
+    },
+    {
+      "name": "First Name",
+      "type": "text",
+      "validations": {
+        "required": "warning",
+        "message": "You didn't include a first name - make sure this was intentional before you submit the form."
+      }
+    },
+    {
+      "name": "Middle Name",
+      "type": "text"
+    },
+    {
+      "name": "Student ID",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "yes",
+          "message": "You must provide your student ID!"
+        },
+        "regex": {
+          "value": "^(0{3})?[0-9]{6}$",
+          "message": "You must enter your 9-digit student ID!"
+        }
+      }
+    },
+    {
+      "name": "Email",
+      "type": "text",
+      "validations": {
+        "required": "yes",
+        "format": "email"
+      }
+    },
+    {
+      "name": "Major",
+      "type": "text",
+      "validations": {
+        "required": "yes"
+      }
+    },
+    {
+      "name": "Degree",
+      "type": "text",
+      "validations": {
+        "required": "yes"
+      }
+    },
+    {
+      "name": "Student Signature",
+      "type": "signature"
+    },
+    {
+      "name": "Student Name",
+      "type": "text",
+      "validations": {
+        "required": "yes"
+      }
+    },
+    {
+      "name": "StudentIDpage2",
+      "type": "text",
+      "validations": {
+        "required": "yes"
+      }
+    }
+  ]
+}

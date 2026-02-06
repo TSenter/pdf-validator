@@ -31,6 +31,8 @@ If the validation value is an object, the object must contain the field `value` 
 
 This property specifies whether or not this field is required. A value of `yes` (or `true`) will mark the field as required, meaning an error will be thrown if the field is "empty". A value of `no` (or `false`) will mark the field as not required, meaning that this portion of the validation will always pass. A value of `warning` will throw a warning if the field is "empty", but the validation will otherwise pass.
 
+Sometimes you may want a field's validation to terminate early, such as on a warning. This can be achieved by setting the `endOnFailedWarning` property to `true`. In this case, no further validations will be performed on the given field if this validation generates a warning.
+
 #### Property - `format`
 
 |                |                           |
@@ -103,7 +105,7 @@ The bulk of the power with the validator is the ability to create custom validat
 
 The first argument, `FormField`, contains information relevant to the particular field being validated.
 
-The second argument is a mapping of all form fields, where the key is the field's name. This can be useful for creating fields dependent on other fields, which is currently not supported natively.
+The second argument is a mapping of all form fields, where the key is the field's name. This can be useful for creating fields dependent on the values other fields, which is currently not supported natively.
 
 The third argument is a report object that tracks the status of the form as a whole. All information related to validation success, warnings and errors should be logged in the report, regardless of the reporting settings - that is handled later.
 
@@ -112,6 +114,27 @@ The fourth and final argument is a preferences object that can be used to access
 The return value of this function is whether or not further validations should be applied to this particular field. If `true`, the next validation (if it exists) will be applied. Returning `false` prevents any futher actions being taken against a particular field, and can be used to prevent multiple error or warning messages being generated for the same field.
 
 To apply your custom rule to a field, add the `custom` field to the validations object on a field with the value of the full classname, eg. `com.tylersenter.pdf.validations.FormatValidation`.
+
+## Tables
+
+Sometimes a situation requires for a series of fields, repeated across numerous rows. These can be thought of as tables. While a naive way to validate all of this data is to simply add validations for each field in the table, this can quickly grow out of hand. Take a table with 20 rows and 5 fields each - that is 100 fields to write validations for! Assuming the requirements are consistent for the corresponding fields across each row, this same behavior can be captured with a table.
+
+### Table Properties
+
+Defining a table is very similar to defining a normal list of fields. The following table lists the properties required to define your own field tables:
+
+|   Property    |   Type  | Accepted Values |                       Description                        |
+| :-----------: | :-----: | :-------------: | :------------------------------------------------------: |
+| `name`        | String  | `*`             | The name of the field table                              |
+| `range`       | Object  | `*`             | An object defining the following properties:             |
+| `range.start` | Integer | `*`             | The number of the first row in the table (defaults to 1) |
+| `range.end`   | Integer | `*`             | The number of the last row in the table                  |
+| `range.step`  | Integer | `*`             | The increment between each row (defaults to 1)           |
+| `structure`   | Array   | `*`             | See [Table Structure](#table-structure)                  |
+
+### Table Structure
+
+The bulk of the power with tables comes with the `structure` property - this is an array of [fields](#field), with a few key differences. The name of each field will be different across each row, so you can supply the variable `{{row}}` to the field name to differentiate corresponding fields in different rows.
 
 ## Preferences
 

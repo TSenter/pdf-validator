@@ -1,0 +1,204 @@
+{
+  "preferences": {
+    "warnOnUnknownField": false
+  },
+  "fields": [
+    {
+      "name": "Last Name",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "yes",
+          "invalidMessage": "Last name is required."
+        }
+      }
+    },
+    {
+      "name": "First Name",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "warning",
+          "invalidMessage": "You left your first name blank. Make sure this was intentional before submitting the form."
+        }
+      }
+    },
+    {
+      "name": "Middle Name",
+      "type": "text"
+    },
+    {
+      "name": "Student ID",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "yes",
+          "invalidMessage": "Your student ID is required."
+        },
+        "regex": {
+          "value": "([0]{3})?[0-9]{6}",
+          "invalidMessage": "Your 9-digit student ID is required."
+        }
+      }
+    },
+    {
+      "name": "Email",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "yes",
+          "invalidMessage": "Your student email is required."
+        },
+        "format": {
+          "value": "email",
+          "invalidMessage": "You must enter a valid email address."
+        }
+      }
+    },
+    {
+      "name": "Major",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "yes",
+          "invalidMessage": "Your major is required."
+        },
+        "allowList": {
+          "value": [
+            "Computer Science",
+            "Computer Engineering",
+            "Electrical Engineering"
+          ],
+          "caseSensitive": false,
+          "invalidMessage": "Your major can only be 'Computer Science', 'Computer Engineering' or 'Electrical Engineering', you entered '{{fieldValue}}'"
+        }
+      }
+    },
+    {
+      "name": "Degree",
+      "type": "text",
+      "validations": {
+        "required": {
+          "value": "yes",
+          "invalidMessage": "Your degree is required."
+        },
+        "allowList": {
+          "value": "Masters,Master's,MS",
+          "invalidMessage": "Your degree must be Masters, you entered {{fieldValue}}"
+        }
+      }
+    },
+    {
+      "name": "Campus",
+      "type": "button",
+      "validations": {
+        "disallowList": {
+          "value": "Off",
+          "invalidMessage": "You must select a campus."
+        },
+        "allowList": {
+          "value": "Knoxville",
+          "invalidMessage": "Your campus must be Knoxville."
+        }
+      }
+    },
+    {
+      "name": "Concentration",
+      "type": "text",
+      "validations": {
+        "required": "no"
+      }
+    }
+  ],
+  "tables": [
+    {
+      "name": "courses",
+      "range": {
+        "start": 2,
+        "end": 14
+      },
+      "structure": [
+        {
+          "name": "MajorCourseYear{{row}}",
+          "type": "text",
+          "validations": {
+            "required": "no",
+            "regex": {
+              "value": "20[0-9]{2}\\/[Fall|Summ|Spring]*",
+              "invalidMessage": "The term you entered on row {{row}} is invalid. The term should follow the format YEAR/SEM, where SEM is either Fall, Spring, or Summ, eg. '2020/Spring'"
+            }
+          }
+        },
+        {
+          "name": "MajorCourseNamePrefix{{row}}",
+          "type": "text",
+          "validations": {
+            "required": {
+              "value": "yes",
+              "dependentKeys": "MajorCourseYear{{row}}",
+              "invalidMessage": "You must enter the course prefix on row {{row}}"
+            },
+            "allowList": {
+              "value": [
+                "COSC",
+                "ECE",
+                "MATH"
+              ],
+              "invalidMessage": "You can "
+            }
+          }
+        },
+        {
+          "name": "MajorCourseNumber{{row}}",
+          "type": "text",
+          "validations": {
+            "required": {
+              "value": "yes",
+              "dependentKeys": "MajorCourseYear{{row}}",
+              "invalidMessage": "You must enter the course number on row {{row}}"
+            },
+            "regex": {
+              "value": "[4-6][0-9]{2}[A-Z]?",
+              "invalidMessage": ""
+            },
+            "format": {
+              "value": "integer",
+              "minimum": 400,
+              "maximum": 699
+            }
+          }
+        },
+        {
+          "name": "MajorCourseHours{{row}}",
+          "type": "text",
+          "validations": {
+            "required": {
+              "value": "yes",
+              "dependentKeys": "MajorCourseYear{{row}}",
+              "invalidMessage": "You must enter the course hours on row {{row}}"
+            },
+            "allowList": {
+              "value": "1,3,6",
+              "allowTrim": true
+            }
+          }
+        },
+        {
+          "name": "MajorGrade{{row}}",
+          "type": "text",
+          "validations": {
+            "required": {
+              "value": "warning",
+              "endOnFailedWarning": true,
+              "dependentKeys": "MajorCourseYear{{row}}",
+              "invalidMessage": "You must enter the course grade on row {{row}}"
+            },
+            "allowList": {
+              "value": "A+,A,A-,B+,B,B-,C+,C,C-,D+,D,D-,F"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

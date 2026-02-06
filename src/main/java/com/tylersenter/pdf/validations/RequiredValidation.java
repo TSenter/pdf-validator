@@ -8,6 +8,7 @@ import com.tylersenter.pdf.reporting.Report;
 public class RequiredValidation extends FieldValidation {
 
   private static final String DEPENDENT_KEYS_FIELD = "dependentKeys";
+  private static final String END_ON_FAILED_WARNING_FIELD = "endOnFailedWarning";
 
   public static enum Level {
     YES, NO, WARNING;
@@ -30,6 +31,7 @@ public class RequiredValidation extends FieldValidation {
   public boolean validate(FormField field, Map<String, FormField> fields, Report report,
       Preferences preferences) {
     boolean isEnabled = true;
+    boolean endOnFailedWarning = false;
     if (hasProperty(DEPENDENT_KEYS_FIELD)) {
       isEnabled = false;
       String dependentKeys = (String) getProperty(DEPENDENT_KEYS_FIELD);
@@ -50,6 +52,10 @@ public class RequiredValidation extends FieldValidation {
       }
     }
 
+    if (hasProperty(END_ON_FAILED_WARNING_FIELD)) {
+      endOnFailedWarning = (boolean) getProperty(END_ON_FAILED_WARNING_FIELD);
+    }
+
     if (!isEnabled) {
       return false;
     }
@@ -61,7 +67,7 @@ public class RequiredValidation extends FieldValidation {
 
     if (level == Level.WARNING && !field.hasValue()) {
       generateWarning(field, preferences, report);
-      return true;
+      return !endOnFailedWarning;
     }
 
     if (level == Level.YES && !field.hasValue()) {
